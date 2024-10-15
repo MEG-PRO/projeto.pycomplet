@@ -1,0 +1,116 @@
+import random
+from colorama import Fore, Style
+
+
+times = ['atletico mineiro', 'flamengo', 'corinthians', 'botafogo', 'vasco', 'internacional']
+resultados = {1: ('Flamengo', 'Vasco'),
+              2: ('Internacional', 'Corinthians',),
+              3: ('Atlético Mineiro', 'Botafogo')}
+saldo = 0
+historico = []
+
+
+print(Fore.LIGHTBLUE_EX + Style.BRIGHT + "BEM-VINDO À PLATAFORMA MEGbet⚡\n"
+      "- como podemos ajudar? -" + Style.RESET_ALL)
+
+
+while True:
+
+    print('══════ ⋆ ★ ⋆ ═══════ \n'
+          '1. Depositar\n2. Sacar\n3. Saldo\n4. Apostar\n5. Histórico de apostas\n6. Sair\n' \
+          '══════ ⋆ ★ ⋆ ═══════ \n')
+
+    comando = int(input('Escolha uma opção: '))
+    print()
+
+    if comando == 1: #deposito
+        deposito = float(input("valor a ser depositado: "))
+        saldo+=deposito
+        print()
+
+    elif comando == 2: #saque
+        saque = float(input('saque: '))
+        if saque > saldo:
+            print(f'Operação inválida! Seu saque deverá ser menor que: {saldo}')
+            print() 
+            
+        else:
+            saldo -= saque
+            print(f'Saque realizado! Valor do saque: {saque}')
+
+    if comando == 3: #saldo
+        print(f"\nSeu saldo atual é: R${saldo}")
+        print()
+
+    if comando == 4: #aposta
+        print(Fore.LIGHTBLUE_EX + "Esses são os jogos disponíveis:\n"
+              "1. Flamengo x Vasco\n"
+              "2. Internacional x Corinthians\n"
+              "3. Atlético Mineiro x Botafogo\n" + Style.RESET_ALL)
+        
+        
+        Jogo = int(input('Qual jogo deseja apostar?: '))
+        print()
+
+        if Jogo in resultados:
+            time1, time2 = resultados[Jogo]
+            print(f"Você escolheu apostar no jogo: {time1} x {time2}")
+            time_apostado = input(f"Escolha um time para apostar ({time1} ou {time2}): ")
+
+        
+            if time_apostado == time1 or time_apostado == time2:
+
+                valor_aposta = float(input("Digite o valor da aposta: "))
+                
+                if valor_aposta > saldo:
+                    print("Saldo insuficiente para essa aposta.")
+
+
+                elif valor_aposta <= 0:
+                    print("O valor da aposta deve ser positivo.")
+
+                else:
+                    saldo -= valor_aposta  # Deduz a aposta do saldo
+                    print(f"Aposta de R$ {valor_aposta} registrada para o time {time_apostado}.")
+
+                    # Simula o resultado do jogo
+                    resultado = random.choice ([time1, time2])  # Um dos dois times vence aleatoriamente
+                    print(f"O resultado do jogo é: {resultado} venceu!")
+
+                    if resultado == time_apostado:
+                        premio = valor_aposta *2
+                        print(f"Parabéns! Você ganhou! Seu prêmio é: R$ {premio}")
+                        saldo += valor_aposta *2  # Dobra a aposta se o time vencer
+
+                    else:
+                        print("Infelizmente, você perdeu a aposta.")
+
+                    print(f"Seu saldo atual é R$ {saldo}")
+
+                    historico.append(f"Jogo:{time1} x {time2} | Aposta: {time_apostado} | Resultado:{resultado} | ")
+                    
+            else:
+                print("Time inválido para aposta.")
+                
+        else:
+                print("Jogo inválido.")
+
+
+    elif comando == 5:
+                print("\nHistorico de apostas:")
+                if historico:
+                    for aposta in historico:
+                        print(aposta)
+                else:
+                    print("Nenhuma aposta feita")
+
+    elif comando == 6:  # sair
+            print("Saindo... Obrigado por jogar!")
+            
+            break
+    
+    if comando >=7: 
+            print (Fore.LIGHTRED_EX + "Ops, tente novamente ⚠ Escolha de 1 à 6!!" + Style.RESET_ALL)
+
+
+   
